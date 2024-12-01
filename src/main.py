@@ -1,7 +1,7 @@
 import os
 import duckdb
 
-sqlite_file = 'C:/Users/geron/Documents/Python_estudos/Projetos/ETL_database/professores.db'
+sqlite_file = 'C:/Users/geron/Documents/Python_estudos/Projetos/ETL_database/SQLlite-Duckdb/databases/professores.db'
 
 if not os.path.exists(sqlite_file):
     print(f"Erro: O arquivo {sqlite_file} não foi encontrado!")

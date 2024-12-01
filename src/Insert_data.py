@@ -1,19 +1,20 @@
 from faker import Faker
-import duckdb
+import sqlite3
 
 # Criar um objeto Faker
 fake = Faker()
 
-# Conectar ao DuckDB (em memória ou arquivo .db)
-conn = duckdb.connect('professores.duckdb')
+# Conectar ao banco SQLite
+conn = sqlite3.connect('professores.db')
+cursor = conn.cursor()
 
 # Criar a tabela PROFESSOR
-conn.execute('''
+cursor.execute('''
 CREATE TABLE IF NOT EXISTS PROFESSOR (
-    id_professor INTEGER PRIMARY KEY,
+    id_professor INTEGER PRIMARY KEY AUTOINCREMENT,
     nome_professor TEXT,
     departamento TEXT,
-    salario DOUBLE,
+    salario REAL,
     ano_contratacao INTEGER
 )
 ''')
@@ -30,14 +31,12 @@ def gerar_dados_fake(qtd):
 
 # Inserir 1 milhão de registros
 print("Inserindo 1 milhão de registros...")
-
-# Inserir dados em massa
-conn.executemany('''
+cursor.executemany('''
 INSERT INTO PROFESSOR (nome_professor, departamento, salario, ano_contratacao)
 VALUES (?, ?, ?, ?)
 ''', gerar_dados_fake(1_000_000))
 
+# Confirmar as alterações e fechar a conexão
+conn.commit()
 print("Dados inseridos com sucesso!")
-
-# Fechar a conexão
 conn.close()
