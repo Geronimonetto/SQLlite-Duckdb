@@ -7,6 +7,9 @@ if not os.path.exists(sqlite_file):
     print(f"Erro: O arquivo {sqlite_file} não foi encontrado!")
 else:
     con = duckdb.connect()
+    # Instalar e carregar a extensão SQLite
+    con.execute("INSTALL sqlite_scanner;")
+    con.execute("LOAD sqlite_scanner;")
 
     tables = con.execute(f"SELECT name FROM sqlite_master WHERE type='table';").fetchall()
     print(f"Tabelas no arquivo SQLite: {tables}")
